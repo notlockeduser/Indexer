@@ -45,7 +45,12 @@ public class Main {
                             String line;
                             while ((line = bufReader.readLine()) != null) {
                                 line = line.replaceAll("<br /><br />", "");
-                                System.out.println(line);
+
+                                String[] words = line.split("\\s*(\\s|,|!|_|\\.)\\s*");
+
+                                for (String word : words) {
+                                    System.out.println(word);
+                                }
                             }
                         } catch (IOException exc) {
                             System.out.println("Ошибка чтения файла!");
