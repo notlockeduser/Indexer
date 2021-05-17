@@ -5,6 +5,12 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Main {
+    static void filesIndex(int[] N, int V, int[] startIndex, int[] endIndex) {
+        for (int i = 0; i < N.length; i++) {
+            startIndex[i] = N[i] / 50 * (V - 1);
+            endIndex[i] = N[i] / 50 * V;
+        }
+    }
 
     public static void main(String[] args) {
         int V = 5;
@@ -18,5 +24,8 @@ public class Main {
                 new File("aclImdb//train//pos"),
                 new File("aclImdb//train//unsup")
         };
+
+        filesIndex(N, V, startIndex, endIndex);
+
     }
 }
