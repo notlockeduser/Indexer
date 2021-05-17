@@ -49,7 +49,8 @@ public class Main {
                                 String[] words = line.split("\\s*(\\s|,|!|_|\\.)\\s*");
 
                                 for (String word : words) {
-                                    System.out.println(word);
+                                    dictionary.computeIfAbsent(word, k -> new ArrayList<String>())
+                                            .add(dir.getParent() + "\\" + dir.getName() + "\\" + arrayFiles[i].getName());
                                 }
                             }
                         } catch (IOException exc) {
@@ -59,6 +60,6 @@ public class Main {
                 }
             }
         }
-        System.out.println("debugger");
+        System.out.println("debugger"); // check dictionary by debugger
     }
 }
