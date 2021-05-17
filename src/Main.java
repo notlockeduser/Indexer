@@ -29,7 +29,7 @@ public class Main {
 
 
         for (int j = 0; j < directions.length; j++) {
-            File dir  = directions[j];
+            File dir = directions[j];
             if (dir.isDirectory()) {
                 File[] arrayFiles = dir.listFiles();
                 for (int i = 0; i < arrayFiles.length; i++) {
@@ -39,8 +39,17 @@ public class Main {
                                     .getName()
                                     .replaceAll("_+\\d+.txt", ""));
 
-                    if (nameInt >= startIndex[j] && nameInt < endIndex[j])
-                        System.out.println(arrayFiles[i].getName());
+                    if (nameInt >= startIndex[j] && nameInt < endIndex[j]) {
+
+                        try (BufferedReader bufReader = new BufferedReader(new FileReader(arrayFiles[i]))) {
+                            String line;
+                            while ((line = bufReader.readLine()) != null) {
+                                System.out.println(line);
+                            }
+                        } catch (IOException exc) {
+                            System.out.println("Ошибка чтения файла!");
+                        }
+                    }
                 }
             }
         }
