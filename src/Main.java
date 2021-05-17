@@ -1,8 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class Main {
     static void filesIndex(int[] N, int V, int[] startIndex, int[] endIndex) {
@@ -25,7 +23,19 @@ public class Main {
                 new File("aclImdb//train//unsup")
         };
 
+        HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
+
         filesIndex(N, V, startIndex, endIndex);
 
+
+        for (int j = 0; j < directions.length; j++) {
+            File dir = directions[j];
+            if (dir.isDirectory()) {
+                File[] arrayFiles = dir.listFiles();
+                for (int i = 0; i < arrayFiles.length; i++) {
+                    System.out.println(arrayFiles[i].getName());
+                }
+            }
+        }
     }
 }
