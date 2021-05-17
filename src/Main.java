@@ -44,6 +44,7 @@ public class Main {
                         try (BufferedReader bufReader = new BufferedReader(new FileReader(arrayFiles[i]))) {
                             String line;
                             while ((line = bufReader.readLine()) != null) {
+                                line = line.replaceAll("<br /><br />", "");
                                 System.out.println(line);
                             }
                         } catch (IOException exc) {
@@ -53,5 +54,6 @@ public class Main {
                 }
             }
         }
+        System.out.println("debugger");
     }
 }
