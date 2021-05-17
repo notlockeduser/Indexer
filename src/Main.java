@@ -10,6 +10,15 @@ public class Main {
         }
     }
 
+    static void searchIndex(String testWord, HashMap<String, ArrayList<String>> dictionary) {
+        ArrayList<String> array = null;
+        if (dictionary.containsKey(testWord)) {
+            array = dictionary.get(testWord);
+            for (String w : array)
+                System.out.println(w);
+        }
+    }
+
     public static void main(String[] args) {
         int V = 5;
         int[] startIndex = new int[5];
@@ -60,6 +69,8 @@ public class Main {
                 }
             }
         }
+        searchIndex("go", dictionary);
+
         System.out.println("debugger"); // check dictionary by debugger
     }
 }
