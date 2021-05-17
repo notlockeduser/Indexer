@@ -29,11 +29,18 @@ public class Main {
 
 
         for (int j = 0; j < directions.length; j++) {
-            File dir = directions[j];
+            File dir  = directions[j];
             if (dir.isDirectory()) {
                 File[] arrayFiles = dir.listFiles();
                 for (int i = 0; i < arrayFiles.length; i++) {
-                    System.out.println(arrayFiles[i].getName());
+
+                    int nameInt = Integer
+                            .parseInt(arrayFiles[i]
+                                    .getName()
+                                    .replaceAll("_+\\d+.txt", ""));
+
+                    if (nameInt >= startIndex[j] && nameInt < endIndex[j])
+                        System.out.println(arrayFiles[i].getName());
                 }
             }
         }
