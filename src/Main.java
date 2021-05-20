@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
+    static ArrayList<String> arrayStopWords = new ArrayList<String>();
+
     static void filesIndex(int[] N, int V, int[] startIndex, int[] endIndex) {
         for (int i = 0; i < N.length; i++) {
             startIndex[i] = N[i] / 50 * (V - 1);
@@ -20,9 +22,10 @@ public class Main {
         ArrayList<String> array = null, arrayToken = null;
         ArrayList<String> arrayTemp = new ArrayList<String>();
 
-        // by combining, go through each token and save only those files where they are repeated
+        // by combining, go through each token and save only those files where they are repeated (and skip the stop word)
         array = dictionary.get(tokens[0]);
         for (String token : tokens) {
+            if (arrayStopWords.contains(token)) continue;
             if (dictionary.containsKey(token)) {
                 arrayToken = dictionary.get(token);
                 for (String path : arrayToken)
@@ -35,8 +38,20 @@ public class Main {
             }
         }
         // output
-        for (String path : array)
-            System.out.println(path);
+        if (array != null)
+            for (String path : array)
+                System.out.println(path);
+    }
+
+    static void loadStopWords(File file) {
+        try (BufferedReader bufReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                arrayStopWords.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -52,11 +67,15 @@ public class Main {
                 new File("aclImdb//train//pos"),
                 new File("aclImdb//train//unsup")
         };
+        File fileStopWords = new File("stop-words.txt");
 
         HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
 
         // method for calculating the index for a variant
         filesIndex(N, V, startIndex, endIndex);
+
+        // method for loading stop words from a special file
+        loadStopWords(fileStopWords);
 
         // go through the folders from directions
         for (int i = 0; i < directions.length; i++) {
@@ -87,8 +106,9 @@ public class Main {
                                     // break into lexemes
                                     String[] tokens = line.split("\\s*(\\s)\\s*");
 
-                                    // fill the dictionary without repeat
+                                    // fill the dictionary without repeat and remove the stop word
                                     for (String token : tokens) {
+                                        if (arrayStopWords.contains(token)) continue;
                                         dictionary.putIfAbsent(token, new ArrayList<String>());
                                         if (!dictionary.get(token).contains(path))
                                             dictionary.get(token).add(path);
@@ -102,7 +122,8 @@ public class Main {
             }
         }
 
-        searchIndex("The", dictionary);
+        searchIndex("last lives", dictionary);
+        searchIndex("the", dictionary);
 
         // check dictionary by debugger
         System.out.println("debugger");
