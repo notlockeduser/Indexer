@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class Main {
     static void filesIndex(int[] N, int V, int[] startIndex, int[] endIndex) {
@@ -11,14 +10,29 @@ public class Main {
         }
     }
 
-    static void searchIndex(String token, HashMap<String, ArrayList<String>> dictionary) {
-        token = token.toLowerCase();
-        ArrayList<String> array = null;
-        if (dictionary.containsKey(token)) {
-            array = dictionary.get(token);
-            for (String w : array)
-                System.out.println(w);
+    static void searchIndex(String line, HashMap<String, ArrayList<String>> dictionary) {
+        line = line.toLowerCase();
+        String[] tokens = line.split("\\s*(\\s|-)\\s*");
+
+        ArrayList<String> array = null, arrayToken = null;
+        ArrayList<String> arrayTemp = new ArrayList<String>();
+
+        array = dictionary.get(tokens[0]);
+
+        for (String token : tokens) {
+            if (dictionary.containsKey(token)) {
+                arrayToken = dictionary.get(token);
+                for (String path : arrayToken)
+                    if (array.contains(path))
+                        arrayTemp.add(path);
+
+                array.clear();
+                array.addAll(arrayTemp);
+                arrayTemp.clear();
+            }
         }
+        for (String path : array)
+            System.out.println(path);
     }
 
     public static void main(String[] args) {
