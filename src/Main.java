@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class Main {
     static void filesIndex(int[] N, int V, int[] startIndex, int[] endIndex) {
@@ -10,10 +11,11 @@ public class Main {
         }
     }
 
-    static void searchIndex(String testWord, HashMap<String, ArrayList<String>> dictionary) {
+    static void searchIndex(String token, HashMap<String, ArrayList<String>> dictionary) {
+        token = token.toLowerCase();
         ArrayList<String> array = null;
-        if (dictionary.containsKey(testWord)) {
-            array = dictionary.get(testWord);
+        if (dictionary.containsKey(token)) {
+            array = dictionary.get(token);
             for (String w : array)
                 System.out.println(w);
         }
@@ -52,12 +54,12 @@ public class Main {
 
                             try (BufferedReader bufReader = new BufferedReader(new FileReader(file))) {
                                 String line;
-
                                 while ((line = bufReader.readLine()) != null) {
                                     line = line.replaceAll("<br /><br />", " ")
-                                            .replaceAll("[^A-Za-z0-9']", " ");
+                                            .replaceAll("[^A-Za-z0-9']", " ")
+                                            .toLowerCase();
 
-                                    String[] tokens = line.split("\\s*(\\s)\\s*");
+                                    String[] tokens = line.split("\\s*(\\s|-)\\s*");
 
                                     for (String token : tokens) {
                                         dictionary.putIfAbsent(token, new ArrayList<String>());
@@ -65,7 +67,7 @@ public class Main {
                                             dictionary.get(token).add(path);
                                     }
                                 }
-                            } catch (IOException exc) {
+                            } catch (IOException E) {
                                 System.out.println("File read error");
                             }
                         }
