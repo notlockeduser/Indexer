@@ -11,7 +11,8 @@ public class Main {
     }
 
     static void searchIndex(String line, HashMap<String, ArrayList<String>> dictionary) {
-        line = line.toLowerCase();
+        line = line.replaceAll("[^A-Za-z0-9']", " ")
+                .toLowerCase();
         String[] tokens = line.split("\\s*(\\s|-)\\s*");
 
         ArrayList<String> array = null, arrayToken = null;
