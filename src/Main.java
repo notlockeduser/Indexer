@@ -52,14 +52,19 @@ public class Main {
 
                         try (BufferedReader bufReader = new BufferedReader(new FileReader(arrayFiles[i]))) {
                             String line;
+
                             while ((line = bufReader.readLine()) != null) {
                                 line = line.replaceAll("<br /><br />", "");
-
+                                //System.out.println(line);
+                                // need to be finalized
                                 String[] words = line.split("\\s*(\\s|,|!|_|\\.)\\s*");
 
+                                String path = null;
                                 for (String word : words) {
-                                    dictionary.computeIfAbsent(word, k -> new ArrayList<String>())
-                                            .add(dir.getParent() + "\\" + dir.getName() + "\\" + arrayFiles[i].getName());
+                                    dictionary.putIfAbsent(word, new ArrayList<String>());
+                                    path = dir.getParent() + "\\" + dir.getName() + "\\" + arrayFiles[i].getName();
+                                    if (!dictionary.get(word).contains(path))
+                                        dictionary.get(word).add(path);
                                 }
                             }
                         } catch (IOException exc) {
@@ -69,7 +74,7 @@ public class Main {
                 }
             }
         }
-        searchIndex("go", dictionary);
+        searchIndex("The", dictionary);
 
         System.out.println("debugger"); // check dictionary by debugger
     }
