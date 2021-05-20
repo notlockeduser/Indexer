@@ -1,14 +1,14 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main {
     private static ArrayList<String> arrayStopWords = new ArrayList<String>();
     private static ArrayList<File> arrayFiles = new ArrayList<File>();
-    private static ConcurrentHashMap<String, CopyOnWriteArrayList<String>> dictionary = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
     private static int numberThreads = 1;
 
     private static List<String> toList(String token) {
@@ -22,23 +22,22 @@ public class Main {
         // break into lexemes
         String[] tokens = line.split("\\s*(\\s)\\s*");
 
-        ArrayList<String> array = new ArrayList<String>();
-        ArrayList<String> arrayToken = new ArrayList<String>();
-        ArrayList<String> arrayTemp = new ArrayList<String>();
+        List<String> array = null;
+        List<String> arrayToken = null;
+        List<String> arrayTemp = new ArrayList<String>();
 
         // by combining, go through each token and save only those files where they are repeated (and skip the stop word)
-        array.addAll(toList(tokens[0]));
+        array = dictionary.get(tokens[0]);
         for (String token : tokens) {
             if (arrayStopWords.contains(token)) continue;
             if (dictionary.containsKey(token)) {
-                arrayToken.addAll(toList(token));
+                arrayToken = dictionary.get(token);
                 for (String path : arrayToken)
                     if (array.contains(path))
                         arrayTemp.add(path);
 
                 array.clear();
                 array.addAll(arrayTemp);
-                arrayToken.clear();
                 arrayTemp.clear();
             }
         }
@@ -83,7 +82,7 @@ public class Main {
                 // fill the dictionary without repeat and remove the stop word
                 for (String token : tokens) {
                     if (arrayStopWords.contains(token)) continue;
-                    dictionary.putIfAbsent(token, new CopyOnWriteArrayList<String>());
+                    dictionary.putIfAbsent(token, Collections.synchronizedList(new ArrayList<String>()));
                     if (!dictionary.get(token).contains(path))
                         dictionary.get(token).add(path);
                 }
