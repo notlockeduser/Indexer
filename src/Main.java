@@ -1,12 +1,19 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main {
     private static ArrayList<String> arrayStopWords = new ArrayList<String>();
     private static ArrayList<File> arrayFiles = new ArrayList<File>();
-    private static HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
-    private static int numberThreads = 5;
+    private static ConcurrentHashMap<String, CopyOnWriteArrayList<String>> dictionary = new ConcurrentHashMap<>();
+    private static int numberThreads = 1;
+
+    private static List<String> toList(String token) {
+        return Arrays.asList(dictionary.get(token).toArray(new String[0]));
+    }
 
     private static void searchIndex(String line) {
         // clearing unnecessary characters
@@ -15,21 +22,23 @@ public class Main {
         // break into lexemes
         String[] tokens = line.split("\\s*(\\s)\\s*");
 
-        ArrayList<String> array = null, arrayToken = null;
+        ArrayList<String> array = new ArrayList<String>();
+        ArrayList<String> arrayToken = new ArrayList<String>();
         ArrayList<String> arrayTemp = new ArrayList<String>();
 
         // by combining, go through each token and save only those files where they are repeated (and skip the stop word)
-        array = dictionary.get(tokens[0]);
+        array.addAll(toList(tokens[0]));
         for (String token : tokens) {
             if (arrayStopWords.contains(token)) continue;
             if (dictionary.containsKey(token)) {
-                arrayToken = dictionary.get(token);
+                arrayToken.addAll(toList(token));
                 for (String path : arrayToken)
                     if (array.contains(path))
                         arrayTemp.add(path);
 
                 array.clear();
                 array.addAll(arrayTemp);
+                arrayToken.clear();
                 arrayTemp.clear();
             }
         }
@@ -74,7 +83,7 @@ public class Main {
                 // fill the dictionary without repeat and remove the stop word
                 for (String token : tokens) {
                     if (arrayStopWords.contains(token)) continue;
-                    dictionary.putIfAbsent(token, new ArrayList<String>());
+                    dictionary.putIfAbsent(token, new CopyOnWriteArrayList<String>());
                     if (!dictionary.get(token).contains(path))
                         dictionary.get(token).add(path);
                 }
@@ -85,7 +94,7 @@ public class Main {
     }
 
     private static void parallelSharing() {
-        Thread[] threads = new Thread[5];
+        Thread[] threads = new Thread[numberThreads];
         int size = arrayFiles.size();
 
         for (int i = 0; i < numberThreads; i++) {
@@ -122,8 +131,10 @@ public class Main {
 
         // test method to check
         searchIndex("last first man");
+        System.out.println("---");
+        searchIndex("freedom is");
 
-        // check dictionary by debugger
+        // for check debugger
         System.out.println("debugger");
     }
 }
