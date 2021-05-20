@@ -36,44 +36,43 @@ public class Main {
 
         filesIndex(N, V, startIndex, endIndex);
 
-
         for (int j = 0; j < directions.length; j++) {
             File dir = directions[j];
             if (dir.isDirectory()) {
                 File[] arrayFiles = dir.listFiles();
-                for (int i = 0; i < arrayFiles.length; i++) {
 
-                    int nameInt = Integer
-                            .parseInt(arrayFiles[i]
-                                    .getName()
-                                    .replaceAll("_+\\d+.txt", ""));
+                if (arrayFiles != null)
+                    for (File file : arrayFiles) {
+                        String path = dir.getParent() + "\\" + dir.getName() + "\\" + file.getName();
 
-                    if (nameInt >= startIndex[j] && nameInt < endIndex[j]) {
+                        int nameInt = Integer.parseInt(file.getName()
+                                .replaceAll("_+\\d+.txt", ""));
 
-                        try (BufferedReader bufReader = new BufferedReader(new FileReader(arrayFiles[i]))) {
-                            String line;
+                        if (nameInt >= startIndex[j] && nameInt < endIndex[j]) {
 
-                            while ((line = bufReader.readLine()) != null) {
-                                line = line.replaceAll("<br /><br />", "");
-                                //System.out.println(line);
-                                // need to be finalized
-                                String[] words = line.split("\\s*(\\s|,|!|_|\\.)\\s*");
+                            try (BufferedReader bufReader = new BufferedReader(new FileReader(file))) {
+                                String line;
 
-                                String path = null;
-                                for (String word : words) {
-                                    dictionary.putIfAbsent(word, new ArrayList<String>());
-                                    path = dir.getParent() + "\\" + dir.getName() + "\\" + arrayFiles[i].getName();
-                                    if (!dictionary.get(word).contains(path))
-                                        dictionary.get(word).add(path);
+                                while ((line = bufReader.readLine()) != null) {
+                                    line = line.replaceAll("<br /><br />", " ")
+                                            .replaceAll("[^A-Za-z0-9']", " ");
+
+                                    String[] tokens = line.split("\\s*(\\s)\\s*");
+
+                                    for (String token : tokens) {
+                                        dictionary.putIfAbsent(token, new ArrayList<String>());
+                                        if (!dictionary.get(token).contains(path))
+                                            dictionary.get(token).add(path);
+                                    }
                                 }
+                            } catch (IOException exc) {
+                                System.out.println("File read error");
                             }
-                        } catch (IOException exc) {
-                            System.out.println("Ошибка чтения файла!");
                         }
                     }
-                }
             }
         }
+
         searchIndex("The", dictionary);
 
         System.out.println("debugger"); // check dictionary by debugger
