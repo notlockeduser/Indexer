@@ -42,6 +42,11 @@ public class Indexer {
         // by combining, go through each token and save only those files where they are repeated (and skip the stop word)
         array = dictionary.get(tokens[0]);
         for (String token : tokens) {
+            if (array == null) {
+                array = new ArrayList<String>();
+                array.add("No results");
+                break;
+            }
             if (arrayStopWords.contains(token)) continue;
             if (dictionary.containsKey(token)) {
                 arrayToken = dictionary.get(token);
