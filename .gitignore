@@ -1,1 +1,6 @@
 aclImdb/
+.gitattributes
+Client.bat
+Server.bat
+.idea
+Course-work.iml

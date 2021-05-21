@@ -17,7 +17,7 @@ public class Indexer {
         // input data
         this.numberThreads = n;
         String rootPath = "C:\\Users\\Bogdan\\Documents\\GitHub\\Parallel-processing-Course-work\\";
-        final File fileStopWords = new File(rootPath + "stop-words.txt");
+        final File fileStopWords = new File(rootPath + "assets\\stop-words.txt");
         final File folder = new File(rootPath + "aclImdb");
         // method for loading stop words from a special file
         loadStopWords(fileStopWords);
