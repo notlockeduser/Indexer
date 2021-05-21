@@ -1,19 +1,14 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Main {
+public class Indexer {
     private static ArrayList<String> arrayStopWords = new ArrayList<String>();
     private static ArrayList<File> arrayFiles = new ArrayList<File>();
     private static ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
-    private static int numberThreads = 1;
-
-    private static List<String> toList(String token) {
-        return Arrays.asList(dictionary.get(token).toArray(new String[0]));
-    }
+    private static int numberThreads = 5;
 
     private static void searchIndex(String line) {
         // clearing unnecessary characters
