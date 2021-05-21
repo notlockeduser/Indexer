@@ -8,7 +8,10 @@ class ServerHelper extends Thread {
     private BufferedReader in; // поток чтения из сокета
     private BufferedWriter out; // поток записи в сокет
     private String date; // время и дата присоеденинения
-    public String nickname; // никнейм подключенного клиента
+
+    private static String searchRequest(String request){
+        return request + " processing...";
+    }
 
     public ServerHelper(Socket socket) throws IOException {
         this.socket = socket;
@@ -22,10 +25,17 @@ class ServerHelper extends Thread {
     public void run() {
         try {
             date = in.readLine();
-            nickname = in.readLine();
-            System.out.println("new Client - " + nickname + " - " + date);
-            send("new client is registered");
-            send("\n --- Wait message from server --- \n");
+            send("connected to server");
+            System.out.println("new client is connected - " + date);
+
+            String request;
+            while (true){ // постоянно смотрим на входящие данные с сервера и если они есть, выводим
+                request = in.readLine();
+                if (request != null){
+                    System.out.println("request - " + request);
+                    send(searchRequest(request));
+                }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -9,7 +9,6 @@ public class Client {
     private static BufferedReader in; // поток чтения из сокета
     private static BufferedWriter out; // поток записи в сокет
     private static String date; // время подключения клиента
-    private static String nickname; // никнейм подключенного клиента
 
     public static void main(String[] args) {
         try {
@@ -20,17 +19,16 @@ public class Client {
                 out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
                 date = new Date().toString();
-                System.out.println("Write your nickname:");
-                nickname = reader.readLine();
-
                 send(date);
-                send(nickname);
+                System.out.println(in.readLine());
 
-                String serverWord;
+                String request ;
                 while (true){ // постоянно смотрим на входящие данные с сервера и если они есть, выводим
-                    serverWord = in.readLine();
-                    if (serverWord != null){
-                        System.out.println(serverWord);
+                    System.out.println("\nEnter your request");
+                    request = reader.readLine();
+                    if (request != null){
+                        send(request);
+                        System.out.println("server answer " +in.readLine());
                     }
                 }
             } finally { // в любом случае необходимо закрыть сокет и потоки
