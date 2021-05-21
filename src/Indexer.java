@@ -37,20 +37,24 @@ public class Indexer {
         // break into lexemes
         String[] tokens = line.split("\\s*(\\s)\\s*");
 
-        List<String> array = new ArrayList<String>();
+        List<String> array = null;
         List<String> arrayToken = null;
         List<String> arrayTemp = new ArrayList<String>();
 
         // by combining, go through each token and save only those files where they are repeated (and skip the stop word)
         // if not, then send an array with one value - no results
-        array = dictionary.get(tokens[0]);
+        boolean first = true;
         for (String token : tokens) {
+            if (arrayStopWords.contains(token)) continue;
+            if (first) {
+                array = dictionary.get(token);
+                first = false;
+            }
             if (array == null) {
                 array = new ArrayList<String>();
                 array.add("No results");
                 break;
             }
-            if (arrayStopWords.contains(token)) continue;
             if (dictionary.containsKey(token)) {
                 arrayToken = dictionary.get(token);
                 for (String path : arrayToken)
