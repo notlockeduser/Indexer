@@ -50,11 +50,6 @@ public class Indexer {
                 array = dictionary.get(token);
                 first = false;
             }
-            if (array == null) {
-                array = new ArrayList<String>();
-                array.add("No results");
-                break;
-            }
             if (dictionary.containsKey(token)) {
                 arrayToken = dictionary.get(token);
                 for (String path : arrayToken)
@@ -65,6 +60,10 @@ public class Indexer {
                 array.addAll(arrayTemp);
                 arrayTemp.clear();
             }
+        }
+        if (array == null) {
+            array = new ArrayList<String>();
+            array.add("No results");
         }
         // output
         return array;
