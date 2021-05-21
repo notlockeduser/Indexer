@@ -11,7 +11,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) { // создание сервера
             System.out.println("Server is running");
-            //Indexer folder = new Indexer();
+            Indexer folder = new Indexer();
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 try {

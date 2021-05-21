@@ -10,6 +10,33 @@ public class Indexer {
     private static ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
     private static int numberThreads = 5;
 
+    Indexer() {
+        // input data
+        double startTime, finalTime, totalTime = 0;
+        startTime = System.nanoTime();
+        final File fileStopWords = new File("stop-words.txt");
+        final File folder = new File("aclImdb");
+
+        // method for loading stop words from a special file
+        loadStopWords(fileStopWords);
+        // open the root folder and recursively go through it collecting all the files
+        listFilesForFolder(folder);
+        // splitting a data array into streams and their subsequent indexing
+        parallelSharing();
+
+        // test method to check
+        searchIndex("last first man");
+        System.out.println("---");
+        searchIndex("freedom is");
+
+        // time of work
+        finalTime = (System.nanoTime() - startTime) / 1000000;
+        System.out.println(finalTime);
+
+        // for check debugger
+        System.out.println("debugger");
+    }
+
     private static void searchIndex(String line) {
         // clearing unnecessary characters
         line = line.replaceAll("[^A-Za-z0-9']", " ")
@@ -109,32 +136,5 @@ public class Indexer {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-    }
-
-    public static void main(String[] args) throws IOException {
-        // input data
-        double startTime, finalTime, totalTime = 0;
-        startTime = System.nanoTime();
-        final File fileStopWords = new File("stop-words.txt");
-        final File folder = new File("aclImdb");
-
-        // method for loading stop words from a special file
-        loadStopWords(fileStopWords);
-        // open the root folder and recursively go through it collecting all the files
-        listFilesForFolder(folder);
-        // splitting a data array into streams and their subsequent indexing
-        parallelSharing();
-
-         // test method to check
-        searchIndex("last first man");
-        System.out.println("---");
-        searchIndex("freedom is");
-
-        // time of work
-        finalTime = (System.nanoTime() - startTime) / 1000000;
-        System.out.println(finalTime);
-
-        // for check debugger
-        System.out.println("debugger");
     }
 }
