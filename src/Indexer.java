@@ -113,6 +113,8 @@ public class Indexer {
 
     public static void main(String[] args) throws IOException {
         // input data
+        double startTime, finalTime, totalTime = 0;
+        startTime = System.nanoTime();
         final File fileStopWords = new File("stop-words.txt");
         final File folder = new File("aclImdb");
 
@@ -123,10 +125,14 @@ public class Indexer {
         // splitting a data array into streams and their subsequent indexing
         parallelSharing();
 
-        // test method to check
+         // test method to check
         searchIndex("last first man");
         System.out.println("---");
         searchIndex("freedom is");
+
+        // time of work
+        finalTime = (System.nanoTime() - startTime) / 1000000;
+        System.out.println(finalTime);
 
         // for check debugger
         System.out.println("debugger");
