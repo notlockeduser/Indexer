@@ -37,17 +37,20 @@ public class Client {
                 System.out.println(in.readLine());
 
                 // send request to the server and receive a response
-                String request;
+                String request=null;
                 while (true) {
                     System.out.println("\n\nEnter your request");
                     request = console.readLine();
-                    if (request != null) {
-                        send(request);
-                        System.out.println("\nServer response");
-                        int size = Integer.parseInt(in.readLine());
-                        for (int i = 0; i < size; i++)
-                            System.out.println(in.readLine());
+                    while (request.isEmpty()){
+                        System.out.println("Repeat your request");
+                        request = console.readLine();
                     }
+
+                    send(request);
+                    System.out.println("\nServer response");
+                    int size = Integer.parseInt(in.readLine());
+                    for (int i = 0; i < size; i++)
+                        System.out.println(in.readLine());
                 }
             } finally {
                 // in any case, you need to close the socket and streams
