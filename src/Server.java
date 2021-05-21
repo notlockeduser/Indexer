@@ -17,6 +17,7 @@ public class Server {
                 try {
                     serverList.add(new ServerHelper(clientSocket, folder)); // добавить новое соединенние в список
                 } catch (IOException e) {
+                    System.out.println(e);
                     clientSocket.close();
                 }
             }
