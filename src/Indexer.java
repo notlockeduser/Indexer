@@ -5,15 +5,17 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Indexer {
-    private ArrayList<String> arrayStopWords  = new ArrayList<String>();
-    private ArrayList<File> arrayFiles= new ArrayList<File>();
-    private ConcurrentHashMap<String, List<String>> dictionary =  new ConcurrentHashMap<>();;
-    private int numberThreads = 5;
+    private ArrayList<String> arrayStopWords = new ArrayList<String>();
+    private ArrayList<File> arrayFiles = new ArrayList<File>();
+    private ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
+    private int numberThreads;
 
-    Indexer() {
-        // input data
-        double startTime, finalTime, totalTime = 0;
+    public Indexer(int n) {
+        // time
+        double startTime, finalTime;
         startTime = System.nanoTime();
+        // input data
+        this.numberThreads = n;
         String rootPath = "C:\\Users\\Bogdan\\Documents\\GitHub\\Parallel-processing-Course-work\\";
         final File fileStopWords = new File(rootPath + "stop-words.txt");
         final File folder = new File(rootPath + "aclImdb");
@@ -25,7 +27,7 @@ public class Indexer {
         parallelSharing();
         // time of work
         finalTime = (System.nanoTime() - startTime) / 1000000;
-        System.out.println(finalTime);
+        System.out.println("Folder indexing time " + finalTime + " ms");
     }
 
     public List<String> searchIndex(String line) {
@@ -35,11 +37,12 @@ public class Indexer {
         // break into lexemes
         String[] tokens = line.split("\\s*(\\s)\\s*");
 
-        List<String> array = null;
+        List<String> array = new ArrayList<String>();
         List<String> arrayToken = null;
         List<String> arrayTemp = new ArrayList<String>();
 
         // by combining, go through each token and save only those files where they are repeated (and skip the stop word)
+        // if not, then send an array with one value - no results
         array = dictionary.get(tokens[0]);
         for (String token : tokens) {
             if (array == null) {
@@ -61,25 +64,6 @@ public class Indexer {
         }
         // output
         return array;
-    }
-
-    private void loadStopWords(File file) {
-        try (BufferedReader bufReader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = bufReader.readLine()) != null) {
-                arrayStopWords.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void listFilesForFolder(File folder) {
-        for (File file : folder.listFiles())
-            if (file.isDirectory())
-                listFilesForFolder(file);
-            else
-                arrayFiles.add(file);
     }
 
     private void doIndex(File file) {
@@ -130,5 +114,24 @@ public class Indexer {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
+    }
+
+    private void loadStopWords(File file) {
+        try (BufferedReader bufReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                arrayStopWords.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void listFilesForFolder(File folder) {
+        for (File file : folder.listFiles())
+            if (file.isDirectory())
+                listFilesForFolder(file);
+            else
+                arrayFiles.add(file);
     }
 }
