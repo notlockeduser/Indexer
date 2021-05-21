@@ -5,39 +5,27 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Indexer {
-    private ArrayList<String> arrayStopWords;
-    private ArrayList<File> arrayFiles;
-    private ConcurrentHashMap<String, List<String>> dictionary;
+    private ArrayList<String> arrayStopWords  = new ArrayList<String>();
+    private ArrayList<File> arrayFiles= new ArrayList<File>();
+    private ConcurrentHashMap<String, List<String>> dictionary =  new ConcurrentHashMap<>();;
     private int numberThreads = 5;
 
     Indexer() {
-        this.dictionary = new ConcurrentHashMap<>();
-        this.arrayFiles = new ArrayList<File>();
-        this.arrayStopWords = new ArrayList<String>();
         // input data
         double startTime, finalTime, totalTime = 0;
         startTime = System.nanoTime();
-        final File fileStopWords = new File("stop-words.txt");
-        final File folder = new File("aclImdb");
-
+        String rootPath = "C:\\Users\\Bogdan\\Documents\\GitHub\\Parallel-processing-Course-work\\";
+        final File fileStopWords = new File(rootPath + "stop-words.txt");
+        final File folder = new File(rootPath + "aclImdb");
         // method for loading stop words from a special file
         loadStopWords(fileStopWords);
         // open the root folder and recursively go through it collecting all the files
         listFilesForFolder(folder);
         // splitting a data array into streams and their subsequent indexing
         parallelSharing();
-
-        // test method to check
-        //searchIndex("last first man");
-        //System.out.println("---");
-        //searchIndex("freedom is");
-
         // time of work
         finalTime = (System.nanoTime() - startTime) / 1000000;
         System.out.println(finalTime);
-
-        // for check debugger
-        //System.out.println("debugger");
     }
 
     public List<String> searchIndex(String line) {
