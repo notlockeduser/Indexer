@@ -15,7 +15,7 @@ public class Server {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 try {
-                    serverList.add(new ServerHelper(clientSocket)); // добавить новое соединенние в список
+                    serverList.add(new ServerHelper(clientSocket, folder)); // добавить новое соединенние в список
                 } catch (IOException e) {
                     clientSocket.close();
                 }

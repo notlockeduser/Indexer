@@ -22,13 +22,16 @@ public class Client {
                 send(date);
                 System.out.println(in.readLine());
 
-                String request ;
-                while (true){ // постоянно смотрим на входящие данные с сервера и если они есть, выводим
+                String request;
+                while (true) { // постоянно смотрим на входящие данные с сервера и если они есть, выводим
                     System.out.println("\nEnter your request");
                     request = reader.readLine();
-                    if (request != null){
+                    if (request != null) {
                         send(request);
-                        System.out.println("server answer " +in.readLine());
+                        System.out.println("server response");
+                        int size = Integer.parseInt(in.readLine());
+                        for (int i = 0; i < size; i++)
+                            System.out.println(in.readLine());
                     }
                 }
             } finally { // в любом случае необходимо закрыть сокет и потоки

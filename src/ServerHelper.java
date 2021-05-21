@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 class ServerHelper extends Thread {
 
@@ -8,13 +9,19 @@ class ServerHelper extends Thread {
     private BufferedReader in; // поток чтения из сокета
     private BufferedWriter out; // поток записи в сокет
     private String date; // время и дата присоеденинения
+    private Indexer folder;
 
-    private static String searchRequest(String request){
-        return request + " processing...";
+    private void searchRequest(String request) {
+        List<String> array = folder.searchIndex(request);
+        if (array != null)
+            send(Integer.toString(array.size()));
+            for (String path : array)
+                send(path);
     }
 
-    public ServerHelper(Socket socket) throws IOException {
+    public ServerHelper(Socket socket, Indexer folder) throws IOException {
         this.socket = socket;
+        this.folder = folder;
         reader = new BufferedReader(new InputStreamReader(System.in));
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -29,11 +36,11 @@ class ServerHelper extends Thread {
             System.out.println("new client is connected - " + date);
 
             String request;
-            while (true){ // постоянно смотрим на входящие данные с сервера и если они есть, выводим
+            while (true) { // постоянно смотрим на входящие данные с сервера и если они есть, выводим
                 request = in.readLine();
-                if (request != null){
+                if (request != null) {
                     System.out.println("request - " + request);
-                    send(searchRequest(request));
+                    searchRequest(request);
                 }
             }
 

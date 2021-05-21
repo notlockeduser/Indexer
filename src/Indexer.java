@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Indexer {
-    private static ArrayList<String> arrayStopWords = new ArrayList<String>();
-    private static ArrayList<File> arrayFiles = new ArrayList<File>();
-    private static ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
-    private static int numberThreads = 5;
+    private ArrayList<String> arrayStopWords;
+    private ArrayList<File> arrayFiles;
+    private ConcurrentHashMap<String, List<String>> dictionary;
+    private int numberThreads = 5;
 
     Indexer() {
+        this.dictionary = new ConcurrentHashMap<>();
+        this.arrayFiles = new ArrayList<File>();
+        this.arrayStopWords = new ArrayList<String>();
         // input data
         double startTime, finalTime, totalTime = 0;
         startTime = System.nanoTime();
@@ -25,19 +28,19 @@ public class Indexer {
         parallelSharing();
 
         // test method to check
-        searchIndex("last first man");
-        System.out.println("---");
-        searchIndex("freedom is");
+        //searchIndex("last first man");
+        //System.out.println("---");
+        //searchIndex("freedom is");
 
         // time of work
         finalTime = (System.nanoTime() - startTime) / 1000000;
         System.out.println(finalTime);
 
         // for check debugger
-        System.out.println("debugger");
+        //System.out.println("debugger");
     }
 
-    private static void searchIndex(String line) {
+    public List<String> searchIndex(String line) {
         // clearing unnecessary characters
         line = line.replaceAll("[^A-Za-z0-9']", " ")
                 .toLowerCase();
@@ -64,12 +67,10 @@ public class Indexer {
             }
         }
         // output
-        if (array != null)
-            for (String path : array)
-                System.out.println(path);
+        return array;
     }
 
-    private static void loadStopWords(File file) {
+    private void loadStopWords(File file) {
         try (BufferedReader bufReader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = bufReader.readLine()) != null) {
@@ -80,7 +81,7 @@ public class Indexer {
         }
     }
 
-    private static void listFilesForFolder(File folder) {
+    private void listFilesForFolder(File folder) {
         for (File file : folder.listFiles())
             if (file.isDirectory())
                 listFilesForFolder(file);
@@ -88,7 +89,7 @@ public class Indexer {
                 arrayFiles.add(file);
     }
 
-    private static void doIndex(File file) {
+    private void doIndex(File file) {
         // the path of the given file
         String path = file.getParent() + "\\" + file.getName();
         // read the file line by line
@@ -114,7 +115,7 @@ public class Indexer {
         }
     }
 
-    private static void parallelSharing() {
+    private void parallelSharing() {
         Thread[] threads = new Thread[numberThreads];
         int size = arrayFiles.size();
 
