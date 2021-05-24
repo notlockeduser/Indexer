@@ -37,11 +37,11 @@ public class Client {
                 System.out.println(in.readLine());
 
                 // send request to the server and receive a response
-                String request=null;
+                String request = null;
                 while (true) {
                     System.out.println("\n\nEnter your request");
                     request = console.readLine();
-                    while (request.isEmpty()){
+                    while (request.isEmpty()) {
                         System.out.println("Repeat your request");
                         request = console.readLine();
                     }

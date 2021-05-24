@@ -4,3 +4,7 @@ aclImdb/
 Client.bat
 Server.bat
 Course-work.iml
+compare.xlsx
+~$compare.xlsx
+result_graphics.jpg
+!input/
