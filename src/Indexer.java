@@ -10,15 +10,15 @@ public class Indexer {
     private ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
     private int numberThreads;
 
-    public Indexer(int n) {
+    public Indexer(int n, String rootPath) {
         // time
         double startTime, finalTime;
         startTime = System.nanoTime();
         // input data
         this.numberThreads = n;
-        String rootPath = "C:\\Users\\Bogdan\\Documents\\GitHub\\Parallel-processing-Course-work\\";
+
         final File fileStopWords = new File(rootPath + "assets\\stop-words.txt");
-        final File folder = new File(rootPath + "aclImdb");
+        final File folder = new File(rootPath + "input\\aclImdb");
         // method for loading stop words from a special file
         loadStopWords(fileStopWords);
         // open the root folder and recursively go through it collecting all the files
@@ -61,7 +61,7 @@ public class Indexer {
                 arrayTemp.clear();
             }
         }
-        if (array == null) {
+        if (array == null || array.size() == 0) {
             array = new ArrayList<String>();
             array.add("No results");
         }

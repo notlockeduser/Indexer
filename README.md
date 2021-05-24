@@ -48,6 +48,10 @@ java Client
 
 # Configuring
  - Server (Server.java)
+     - Root folder
+    ```sh
+    public static final String rootPath = "C:/Users/..../project/";
+    ```
     - Port 
     ```sh
     public static final int PORT = 8080;
@@ -56,6 +60,7 @@ java Client
     ```sh
     public static final int nThreads = 5;
     ```
+   
 - Client (Client.java)
   - Ip and Port
    ```sh
