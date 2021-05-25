@@ -50,6 +50,7 @@ public class Indexer {
                 array = dictionary.get(token);
                 first = false;
             }
+            if (array == null) break;
             if (dictionary.containsKey(token)) {
                 arrayToken = dictionary.get(token);
                 for (String path : arrayToken)
