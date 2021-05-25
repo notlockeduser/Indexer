@@ -10,7 +10,7 @@ public class Server {
     public static final String rootPath = "C:\\Users\\Bogdan\\Documents\\GitHub\\Parallel-processing-Course-work\\";
 
     // list of all sockets associated with the client
-    public static LinkedList<ServerHelper> serverList = new LinkedList<>(); // список всех сокетов связаных с клиентом
+    public static LinkedList<ServerHelper> serverList = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
         // create server
