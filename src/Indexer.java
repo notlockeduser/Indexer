@@ -18,7 +18,7 @@ public class Indexer {
         this.numberThreads = n;
 
         final File fileStopWords = new File(rootPath + "assets\\stop-words.txt");
-        final File folder = new File(rootPath + "input\\aclImdb");
+        final File folder = new File(rootPath + "input\\");
         // method for loading stop words from a special file
         loadStopWords(fileStopWords);
         // open the root folder and recursively go through it collecting all the files
