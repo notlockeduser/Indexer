@@ -1,4 +1,4 @@
-# Parallel-processing-Course-work (Indexer)
+Indexer
 
 - [What is it?](#What-is-it?)
 - [Installation](#Installation)
@@ -7,7 +7,7 @@
 
 # What is it?
 
-The task of this course work is to develop programs for building an inverted index, as well as - to use the index.
+The task of this work is to develop programs for building an inverted index, as well as - to use the index.
 
 - During construction, it was possible to speed up the solution time by varying the
   number of threads.
