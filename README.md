@@ -1,4 +1,4 @@
-Indexer
+# Indexer
 
 - [What is it?](#What-is-it?)
 - [Installation](#Installation)
