@@ -5,6 +5,7 @@ import java.util.Date;
 public class Client {
     public static String HOST;
     public static int PORT;
+    public static final String configClientPath = System.getProperty("user.dir") + "\\assets\\ClientConfig.txt";
 
     // socket for communicating with the server
     private static Socket clientSocket;
@@ -15,20 +16,12 @@ public class Client {
     // time and date of connection
     private static String date;
 
-    private static void send(String msg) {
-        try {
-            out.write(msg + "\n");
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void main(String[] args) {
         try {
             try {
+                getConfig(configClientPath);
                 // ask the server for connection access
-                clientSocket = new Socket("localhost", 8080);
+                clientSocket = new Socket(HOST, PORT);
                 console = new BufferedReader(new InputStreamReader(System.in));
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -69,13 +62,22 @@ public class Client {
     public static void getConfig(String configServerPath){
         try (BufferedReader bufReader = new BufferedReader(new FileReader(configServerPath))) {
             String line = bufReader.readLine();
-            String[] pairHOST = line.trim().split("=");
-            HOST = pairHOST[1];
-            line = bufReader.readLine();
             String[] pairPORT = line.trim().split("=");
             PORT = Integer.parseInt(pairPORT[1]);
+            line = bufReader.readLine();
+            String[] pairHOST = line.trim().split("=");
+            HOST = pairHOST[1];
         } catch (IOException E) {
             System.out.println("ServerConfig.txt read error");
+        }
+    }
+
+    private static void send(String msg) {
+        try {
+            out.write(msg + "\n");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
