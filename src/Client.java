@@ -7,14 +7,12 @@ public class Client {
     public static int PORT;
     public static final String configClientPath = System.getProperty("user.dir") + "\\assets\\ClientConfig.txt";
 
-    // socket for communicating with the server
     private static Socket clientSocket;
     // streams for reading from the console, input and output from the socket
     private static BufferedReader console;
     private static BufferedReader in;
     private static BufferedWriter out;
-    // time and date of connection
-    private static String date;
+    private static String dateConnection;
 
     public static void main(String[] args) {
         try {
@@ -27,8 +25,8 @@ public class Client {
                 out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
                 // send the date for "registration"
-                date = new Date().toString();
-                send(date);
+                dateConnection = new Date().toString();
+                send(dateConnection);
                 System.out.println(in.readLine());
 
                 // send request to the server and receive a response

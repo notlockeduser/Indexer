@@ -10,9 +10,7 @@ class ServerHelper extends Thread {
     private BufferedReader console;
     private BufferedReader in;
     private BufferedWriter out;
-    // time and date of connection
     private String date;
-    // indexer to use its search method
     private Indexer folder;
 
     public ServerHelper(Socket socket, Indexer folder) throws IOException {
@@ -21,7 +19,6 @@ class ServerHelper extends Thread {
         console = new BufferedReader(new InputStreamReader(System.in));
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        // call run ()
         start();
     }
 
@@ -47,16 +44,18 @@ class ServerHelper extends Thread {
         }
     }
 
-    // method for searching indexes on request and sending them to the client
+    // searching indexes on request and sending them to the client
     private void searchRequest(String request) {
         List<String> array = folder.searchIndex(request);
-        if (array != null)
+        if (array != null) {
             send(Integer.toString(array.size()));
-        for (String path : array)
+        }
+        for (String path : array) {
             send(path);
+        }
     }
 
-    // method for easy send to client
+    // easy send to client
     private void send(String msg) {
         try {
             out.write(msg + "\n");

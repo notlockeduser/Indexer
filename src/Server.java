@@ -6,7 +6,8 @@ import java.util.LinkedList;
 public class Server {
     public static int PORT;
     public static int nThreads;
-    public static final String rootPath = System.getProperty("user.dir");
+    //public static final String rootPath = System.getProperty("user.dir");
+    public static final String rootPath = "C:\\Users\\Bogdan\\Documents\\GitHub\\Parallel-processing-Course-work";
     public static final String inputPath = rootPath + "\\input\\";
     public static final String stopWordsPath = rootPath + "\\assets\\StopWords.txt";
     public static final String configServerPath = rootPath + "\\assets\\ServerConfig.txt";
@@ -19,7 +20,7 @@ public class Server {
         // create server
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is running");
-            Indexer folder = new Indexer(nThreads, rootPath, inputPath, stopWordsPath);
+            Indexer folder = new Indexer(nThreads, inputPath, stopWordsPath);
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 try {
