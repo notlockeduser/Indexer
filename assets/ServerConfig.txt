@@ -1,5 +1,2 @@
-PORT = 8080;
-nThreads = 5;
-rootPath = "C:\\Users\\Bogdan\\Documents\\GitHub\\Parallel-processing-Course-work\\";
-inputPath = rootPath + "input\\";
-stopWordsPath = rootPath + "assets\\stop-words.txt";
+PORT=8080
+nThreads=5

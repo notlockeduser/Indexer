@@ -17,8 +17,8 @@ public class Indexer {
         // input data
         this.numberThreads = n;
 
-        final File fileStopWords = new File(inputPath);
-        final File folder = new File(stopWordsPath);
+        final File fileStopWords = new File(stopWordsPath);
+        final File folder = new File(inputPath);
 
         loadStopWords(fileStopWords);
         listFilesForFolder(folder);

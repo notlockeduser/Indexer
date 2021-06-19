@@ -3,8 +3,8 @@ import java.net.Socket;
 import java.util.Date;
 
 public class Client {
-    public static final String HOST = "localhost";
-    public static final int PORT = 8080;
+    public static String HOST;
+    public static int PORT;
 
     // socket for communicating with the server
     private static Socket clientSocket;
@@ -63,6 +63,19 @@ public class Client {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void getConfig(String configServerPath){
+        try (BufferedReader bufReader = new BufferedReader(new FileReader(configServerPath))) {
+            String line = bufReader.readLine();
+            String[] pairHOST = line.trim().split("=");
+            HOST = pairHOST[1];
+            line = bufReader.readLine();
+            String[] pairPORT = line.trim().split("=");
+            PORT = Integer.parseInt(pairPORT[1]);
+        } catch (IOException E) {
+            System.out.println("ServerConfig.txt read error");
         }
     }
 }
