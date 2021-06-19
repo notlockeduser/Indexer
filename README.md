@@ -19,22 +19,22 @@ The task of this work is to develop programs for building an inverted index, as 
 # Installation
 Clone repository
 ```sh
-git clone https://github.com/notlockeduser/Parallel-processing-Course-work.git
+git clone https://github.com/notlockeduser/Indexer.git
 ```
  - Place the unpacked input data in the "input/" folder.
- - In the file "assets/stop-words.txt" you can change the directory of stop words
+ - In the file "assets/stop-words.txt" you can change the list of stop words
   if necessary.
    
 Compile
 ```sh
-javac -d out/production/Course-work ./src/*
+javac -d out ./src/*
 ```
 
 # Launching
 
  - Open folder
 ```sh
-cd out/production/Course-work
+cd out
 ```
 - Firstly, launch server
 ```sh
@@ -47,22 +47,19 @@ java Client
 ```
 
 # Configuring
- - Server (Server.java)
-     - Root folder
+ - ServerConfig.txt
+     - PORT - the port on which the server will run
+     - nThreads - number of threads involved in indexing
     ```sh
-    public static final String rootPath = "C:/Users/..../project/";
+    PORT=8080
+    nThreads=5
     ```
-    - Port 
-    ```sh
-    public static final int PORT = 8080;
-    ```
-    - Number of threads
-    ```sh
-    public static final int nThreads = 5;
-    ```
+
    
-- Client (Client.java)
-  - Ip and Port
+- ClientConfig.txt
+    - HOST - host to connect to the server
+    - PORT - port for connecting to the server
    ```sh
-   clientSocket = new Socket("localhost", 8080);
+   PORT=8080
+   HOST=localhost
    ```
