@@ -3,6 +3,8 @@ import java.net.Socket;
 import java.util.Date;
 
 public class Client {
+    public static final String HOST = "localhost";
+    public static final int PORT = 8080;
 
     // socket for communicating with the server
     private static Socket clientSocket;

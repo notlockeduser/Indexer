@@ -10,18 +10,17 @@ public class Indexer {
     private ConcurrentHashMap<String, List<String>> dictionary = new ConcurrentHashMap<>();
     private int numberThreads;
 
-    public Indexer(int n, String rootPath) {
+    public Indexer(int n, String rootPath, String inputPath, String stopWordsPath) {
         // time
         double startTime, finalTime;
         startTime = System.nanoTime();
         // input data
         this.numberThreads = n;
 
-        final File fileStopWords = new File(rootPath + "assets\\stop-words.txt");
-        final File folder = new File(rootPath + "input\\");
-        // method for loading stop words from a special file
+        final File fileStopWords = new File(inputPath);
+        final File folder = new File(stopWordsPath);
+
         loadStopWords(fileStopWords);
-        // open the root folder and recursively go through it collecting all the files
         listFilesForFolder(folder);
         // splitting a data array into streams and their subsequent indexing
         parallelSharing();
@@ -85,10 +84,13 @@ public class Indexer {
                 String[] tokens = line.split("\\s*(\\s)\\s*");
                 // fill the dictionary without repeat and remove the stop word
                 for (String token : tokens) {
-                    if (arrayStopWords.contains(token)) continue;
+                    if (arrayStopWords.contains(token)) {
+                        continue;
+                    }
                     dictionary.putIfAbsent(token, Collections.synchronizedList(new ArrayList<String>()));
-                    if (!dictionary.get(token).contains(path))
+                    if (!dictionary.get(token).contains(path)) {
                         dictionary.get(token).add(path);
+                    }
                 }
             }
         } catch (IOException E) {
@@ -133,9 +135,10 @@ public class Indexer {
 
     private void listFilesForFolder(File folder) {
         for (File file : folder.listFiles())
-            if (file.isDirectory())
+            if (file.isDirectory()) {
                 listFilesForFolder(file);
-            else
+            } else {
                 arrayFiles.add(file);
+            }
     }
 }
